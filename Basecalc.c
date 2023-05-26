@@ -3,9 +3,9 @@
 #include <string.h>
 int main(int argc, char *argv[])
 {
-    int i;
+    int i; // for loop
     int p;
-    char g;
+    char g; // Function type reference
     char b;
     double sum = 0;
     double sumM = 1;
