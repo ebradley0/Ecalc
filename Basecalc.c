@@ -1,7 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-int main(int argc, char *argv[])
+
+typedef enum {
+    CALC_FUNC_INVALID,
+    CALC_FUNC_ADD,
+    CALC_FUNC_SUBTRACT,
+    CALC_FUNC_MULTIPLY,
+    CALC_FUNC_DIVIDE,
+} calc_func_t;
+
+enum argument {
+    HELP = 'H',
+    ADD = 'A',
+    SUBTRACT = 'S',
+    MULTIPLY = 'M',
+    DIVIDE = 'D',
+};
+
+calc_func_t parse_args(char arg)
+{
+    calc_func_t fn;
+
+    switch (arg) {
+    case HELP:
+        printf("THIS IS A HELP STATEMENT\n\n");
+        break;
+    case ADD:
+        printf("You're adding\n");
+        fn = CALC_FUNC_ADD;
+        break;
+    case SUBTRACT:
+        printf("You're subtracting\n");
+        fn = CALC_FUNC_SUBTRACT;
+        break;
+    case MULTIPLY:
+        printf("You're multiplying\n");
+        fn = CALC_FUNC_MULTIPLY;
+        break;
+    case DIVIDE:
+        printf("You're dividing\n");
+        fn = CALC_FUNC_DIVIDE;
+        break;
+    default:
+        printf("Please enter a valid function type. For a list of accepted functions use --H.\n");
+        fn = CALC_FUNC_INVALID;
+        break;
+    }
+
+    return fn;
+}
+
+int main(int argc, char* argv[])
 {
     int i;
     int p;
@@ -15,62 +65,25 @@ int main(int argc, char *argv[])
     double results;
     double storage[100];
     int function = 0;
-    printf("Input: %s\n", argv[1]);
-    g = *argv[1];
-    b = *argv[2];
-    //  printf("%c\n\n\n", g);
-    //  printf("%c\n\n", b);
-    printf("%s\n\n", argv[1]);
 
-    if (g == 'H')
-    {
-        printf("THIS IS A HELP STATEMENT\n\n");
-        return -1;
+    char arg = HELP; // Default to help
+    char* parg;
+    if (argv[1] && (strncmp(argv[1], "-", 1) == 0)) {
+        parg = strrchr(argv[1], '-');
+        arg = (char)*(parg + 1);
+    } else if (argv[1]) {
+        arg = (char)*(argv[1]);
     }
 
-    if (g == 'M') // Choosing type of function
-    {
-        printf("You're multiplying\n");
-        function = 3;
-    }
-    else if (g == 'D')
-    {
+    function = parse_args(arg);
 
-        function = 4;
-    }
-    else if (g == 'S')
-    {
-        printf("You're subtracting\n");
-        function = 2;
-    }
-    else if (g == 'A')
-    {
-        printf("You're adding\n");
-        function = 1;
-    }
-    else if (g == 'H')
-    {
-
-        printf("THIS IS A HELP MESSAGE!");
-        debounce = 1;
-    }
-    else
-    {
-        printf("Please enter a valid function type. For a list of accepted functions use --H.\n");
-        debounce = 1;
-        return 1;
-    }
-
-    if (debounce == 0)
-    {
+    if (debounce == 0) {
         printf("A function can proceed!\n\n");
-        if (function == 1)
-        {
-            for (i = 2; i < argc; i++)
-            {
+        if (function == 1) {
+            for (i = 2; i < argc; i++) {
                 //  printf("----ADDING----\n\n");
                 //   printf("Number logged\n"); // -------------------------------ADD
-                char *y = argv[i];
+                char* y = argv[i];
                 //  printf("%s\n", y);
                 results = strtod(y, &y);
                 //  printf("%f\n\n\n", results);
@@ -79,15 +92,13 @@ int main(int argc, char *argv[])
             }
         }
 
-        else if (function == 2)
-        {
-            char *t = argv[2];
+        else if (function == 2) {
+            char* t = argv[2];
             sumS = strtod(t, &t);
 
-            for (i = 3; i < argc; i++)
-            {
+            for (i = 3; i < argc; i++) {
                 //  printf("Number logged\n"); //---------------------------SUBTRACT
-                char *y = argv[i];
+                char* y = argv[i];
                 //  printf("%s\n", y);
                 results = strtod(y, &y);
                 //  printf("%f\n\n\n", results);
@@ -97,12 +108,10 @@ int main(int argc, char *argv[])
             }
         }
 
-        else if (function == 3)
-        {
-            for (i = 2; i < argc; i++)
-            {
+        else if (function == 3) {
+            for (i = 2; i < argc; i++) {
                 // printf("Number logged\n"); //--------------------------------MULTIPLY
-                char *y = argv[i];
+                char* y = argv[i];
                 // printf("%s\n", y);
                 results = strtod(y, &y);
                 //   printf("%f\n\n\n", results);
@@ -111,17 +120,14 @@ int main(int argc, char *argv[])
                 sumM = sum;
                 // printf("RESULT -------- %lf\n\n", sum);
             }
-        }
-        else if (function == 4)
-        {
+        } else if (function == 4) {
             // printf("You're dividing\n");
-            char *z = argv[2];
+            char* z = argv[2];
             DIV1 = strtod(z, &z);
             // printf("First - %lf\n\n", DIV1);
-            for (i = 3; i < argc; i++)
-            {
+            for (i = 3; i < argc; i++) {
                 // printf("Number logged\n"); // ----------------------------------DIVIDE
-                char *y = argv[i];
+                char* y = argv[i];
                 // printf("%s\n", y);
                 results = strtod(y, &y);
                 // printf("%f\n\n\n", results);
@@ -133,8 +139,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    if (debounce == 0)
-    {
+    if (debounce == 0) {
         printf("The Answer is: %lf\n\n", sum);
         return 0;
     }
