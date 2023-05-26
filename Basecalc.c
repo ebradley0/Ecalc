@@ -132,30 +132,30 @@ function_t arg_to_function(char *arg)
         printf("You're multiplying\n");
         function = MULTIPLICATION;
     }
-#ifdef TEST
-    else if (arg == 'D')
-    {
 
-        function = 4;
+    else if (strncmp(arg, "D", 1) == 0)
+    {
+        printf("You're dividing\n");
+        function = DIVISION;
     }
 
-    else if (arg == 'S')
+    else if (strncmp(arg, "S", 1) == 0)
     {
         printf("You're subtracting\n");
-        function = 2;
+        function = SUBTRACTION;
     }
-    else if (arg == 'A')
+    else if (strncmp(arg, "A", 1) == 0)
     {
         printf("You're adding\n");
-        function = 1;
+        function = ADDITION;
     }
-    else if (arg == 'H')
+    else if (strncmp(arg, "-H", 1) == 0)
     {
 
-        printf("THIS IS A HELP MESSAGE!");
+        printf("THIS IS A HELP MESSAGE!\n\n");
         exit(1);
     }
-#endif
+
     else
     {
         printf("Please enter a valid function type. For a list of accepted functions use --H.\n");
