@@ -27,16 +27,14 @@ int main(int argc, char *argv[])
     double storage[100];
     char my_string[10];
 
-    printf("Input: %s\n", argv[1]);
+    // printf("Input: %s\n", argv[1]);
 
     function_t function = arg_to_function(argv[1]);
 
     g = *argv[1];
     b = *argv[2];
-    //  printf("%c\n\n\n", g);
-    //  printf("%c\n\n", b);
 
-    printf("%s\n\n", argv[1]);
+    // printf("%s\n\n", argv[1]);
 
     if (debounce == 0)
     {
@@ -45,14 +43,13 @@ int main(int argc, char *argv[])
         {
             for (i = 2; i < argc; i++)
             {
-                //  printf("----ADDING----\n\n");
-                //   printf("Number logged\n"); // -------------------------------ADD
+
+                // -------------------------------ADD
                 char *y = argv[i];
-                //  printf("%s\n", y);
+
                 results = strtod(y, &y);
-                //  printf("%f\n\n\n", results);
+
                 sum = sum + results;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
 
@@ -63,14 +60,13 @@ int main(int argc, char *argv[])
 
             for (i = 3; i < argc; i++)
             {
-                //  printf("Number logged\n"); //---------------------------SUBTRACT
+                //---------------------------SUBTRACT
                 char *y = argv[i];
-                //  printf("%s\n", y);
+
                 results = strtod(y, &y);
-                //  printf("%f\n\n\n", results);
+                // sumS represents the first number, so that subtractions can be performed. It is updated to the result for multi number divisions
                 sum = sumS - results;
                 sumS = sum;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
 
@@ -78,35 +74,32 @@ int main(int argc, char *argv[])
         {
             for (i = 2; i < argc; i++)
             {
-                // printf("Number logged\n"); //--------------------------------MULTIPLY
+                //--------------------------------MULTIPLY
                 char *y = argv[i];
-                // printf("%s\n", y);
-                results = strtod(y, &y);
-                //   printf("%f\n\n\n", results);
 
+                results = strtod(y, &y);
+
+                // In order to avoid yielding a 0, sumM represents the first # to be multiplied, it is then updated to equal the result for multi number divisions.
                 sum = sumM * results;
                 sumM = sum;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
         else if (function == DIVISION)
         {
-            // printf("You're dividing\n");
+
             char *z = argv[2];
             DIV1 = strtod(z, &z);
-            // printf("First - %lf\n\n", DIV1);
+
             for (i = 3; i < argc; i++)
             {
-                // printf("Number logged\n"); // ----------------------------------DIVIDE
+                // ----------------------------------DIVIDE
                 char *y = argv[i];
-                // printf("%s\n", y);
-                results = strtod(y, &y);
-                // printf("%f\n\n\n", results);
 
+                results = strtod(y, &y);
+
+                // DIV1 represents base number, it will then be updated by to equal the result for multi number divisions.
                 sum = DIV1 / results;
                 DIV1 = sum;
-
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
     }
@@ -121,9 +114,10 @@ function_t arg_to_function(char *arg)
 {
     function_t function = 0;
 
-    if (strncmp(arg, "H", 1) == 0)
+    if (strncmp(arg, "-H", 1) == 0)
     {
         printf("THIS IS A HELP STATEMENT\n\n");
+        printf("Welcome to E-Calc! A completely unnecessary and simple caluclator\nThe following 4 commands are currently available:\n\n A - Adding\n S - Subtraction\n M - Multiplication\n D - Division\n\n\n In order to run the program, use the following format: (Function - See list) #1, #2, #3, etc. \n\n Currently, the calculations will run off the first input number, so keep that in mind for subtraction through division!\n\n");
         exit(-1);
     }
 
