@@ -8,16 +8,18 @@ typedef enum
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION,
+    CONSTANT, // Multiply a list of numbers by a given value
 } function_t;
 
 function_t arg_to_function(char *arg);
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *arg)
 {
     unsigned int i; // for loop
     int p;
     char g; // Function type reference
     char b;
+    double MULTIPLIER = 0; // For multiplying a list
     double sum = 0;
     double sumM = 1;
     double DIV1 = 0;
@@ -39,6 +41,23 @@ int main(int argc, char *argv[])
     if (debounce == 0)
     {
         printf("A function can proceed!\n\n");
+
+        if (function == CONSTANT)
+        {
+            debounce == 1;
+            char *z = argv[2];
+            MULTIPLIER = strtod(z, &z);
+            printf("MULTIPLING BY CONSTANT\n");
+            for (i = 3; i < argc; i++)
+            {
+                char *y = argv[i];
+                results = strtod(y, &y);
+                results = results * MULTIPLIER;
+                printf("Result: %lf\n", results);
+            }
+            exit(1);
+        }
+
         if (function == ADDITION)
         {
             for (i = 2; i < argc; i++)
@@ -117,7 +136,7 @@ function_t arg_to_function(char *arg)
     if (strncmp(arg, "-H", 1) == 0)
     {
         printf("THIS IS A HELP STATEMENT\n\n");
-        printf("Welcome to E-Calc! A completely unnecessary and simple caluclator\nThe following 4 commands are currently available:\n\n A - Adding\n S - Subtraction\n M - Multiplication\n D - Division\n\n\n In order to run the program, use the following format: (Function - See list) #1, #2, #3, etc. \n\n Currently, the calculations will run off the first input number, so keep that in mind for subtraction through division!\n\n");
+        printf("Welcome to E-Calc! A completely unnecessary and simple caluclator\nThe following 4 commands are currently available:\n\n A - Adding\n S - Subtraction\n M - Multiplication\n D - Division\n C - Multiply a list by a constant\n\n\n In order to run the program, use the following format: (Function - See list) #1, #2, #3, etc. \n\n Currently, the calculations will run off the first input number, so keep that in mind for everything other than addition!\n\n");
         exit(-1);
     }
 
@@ -148,6 +167,12 @@ function_t arg_to_function(char *arg)
 
         printf("THIS IS A HELP MESSAGE!\n\n");
         exit(1);
+    }
+    else if (strncmp(arg, "C", 1) == 0)
+    {
+
+        printf("Multiplying a list");
+        function = CONSTANT;
     }
 
     else
