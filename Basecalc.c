@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "calc.h"
 
-typedef enum {
+typedef enum
+{
     CALC_FUNC_INVALID,
     CALC_FUNC_ADD,
     CALC_FUNC_SUBTRACT,
@@ -10,7 +12,8 @@ typedef enum {
     CALC_FUNC_DIVIDE,
 } calc_func_t;
 
-enum argument {
+enum argument
+{
     HELP = 'H',
     ADD = 'A',
     SUBTRACT = 'S',
@@ -22,7 +25,8 @@ calc_func_t parse_args(char arg)
 {
     calc_func_t fn;
 
-    switch (arg) {
+    switch (arg)
+    {
     case HELP:
         printf("THIS IS A HELP STATEMENT\n\n");
         break;
@@ -51,7 +55,7 @@ calc_func_t parse_args(char arg)
     return fn;
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     int i;
     int p;
@@ -63,83 +67,99 @@ int main(int argc, char* argv[])
     double sumS = 0;
     int debounce = 0;
     double results;
-    double storage[100];
     int function = 0;
 
     char arg = HELP; // Default to help
-    char* parg;
-    if (argv[1] && (strncmp(argv[1], "-", 1) == 0)) {
+    char *parg;
+    if (argv[1] && (strncmp(argv[1], "-", 1) == 0))
+    {
         parg = strrchr(argv[1], '-');
         arg = (char)*(parg + 1);
-    } else if (argv[1]) {
+    }
+    else if (argv[1])
+    {
         arg = (char)*(argv[1]);
     }
 
     function = parse_args(arg);
 
-    if (debounce == 0) {
+    calc_t mycalc;
+    int err = calc_init(&mycalc);
+    if (err)
+    {
+        printf("Calculator failed!\n");
+    }
+    err = mycalc.add(&mycalc, 4.0, 60);
+    err = mycalc.add(&mycalc, mycalc.result, 40);
+    if (err)
+    {
+        printf("Addition failed!\n");
+    }
+
+    printf("Addition Result: %f\n", mycalc.result);
+
+    if (debounce == 0)
+    {
         printf("A function can proceed!\n\n");
-        if (function == 1) {
-            for (i = 2; i < argc; i++) {
-                //  printf("----ADDING----\n\n");
-                //   printf("Number logged\n"); // -------------------------------ADD
-                char* y = argv[i];
-                //  printf("%s\n", y);
+        if (function == 1)
+        {
+            for (i = 2; i < argc; i++)
+            {
+                char *y = argv[i];
+
                 results = strtod(y, &y);
-                //  printf("%f\n\n\n", results);
+
                 sum = sum + results;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
 
-        else if (function == 2) {
-            char* t = argv[2];
+        else if (function == 2)
+        {
+            char *t = argv[2];
             sumS = strtod(t, &t);
 
-            for (i = 3; i < argc; i++) {
-                //  printf("Number logged\n"); //---------------------------SUBTRACT
-                char* y = argv[i];
-                //  printf("%s\n", y);
+            for (i = 3; i < argc; i++)
+            {
+                char *y = argv[i];
+
                 results = strtod(y, &y);
-                //  printf("%f\n\n\n", results);
+
                 sum = sumS - results;
                 sumS = sum;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
 
-        else if (function == 3) {
-            for (i = 2; i < argc; i++) {
-                // printf("Number logged\n"); //--------------------------------MULTIPLY
-                char* y = argv[i];
-                // printf("%s\n", y);
+        else if (function == 3)
+        {
+            for (i = 2; i < argc; i++)
+            {
+                char *y = argv[i];
+
                 results = strtod(y, &y);
-                //   printf("%f\n\n\n", results);
 
                 sum = sumM * results;
                 sumM = sum;
-                // printf("RESULT -------- %lf\n\n", sum);
             }
-        } else if (function == 4) {
-            // printf("You're dividing\n");
-            char* z = argv[2];
+        }
+        else if (function == 4)
+        {
+
+            char *z = argv[2];
             DIV1 = strtod(z, &z);
-            // printf("First - %lf\n\n", DIV1);
-            for (i = 3; i < argc; i++) {
-                // printf("Number logged\n"); // ----------------------------------DIVIDE
-                char* y = argv[i];
-                // printf("%s\n", y);
+
+            for (i = 3; i < argc; i++)
+            {
+                char *y = argv[i];
+
                 results = strtod(y, &y);
-                // printf("%f\n\n\n", results);
 
                 sum = DIV1 / results;
                 DIV1 = sum;
-
-                // printf("RESULT -------- %lf\n\n", sum);
             }
         }
     }
-    if (debounce == 0) {
+    if (debounce == 0)
+    {
         printf("The Answer is: %lf\n\n", sum);
         return 0;
     }
