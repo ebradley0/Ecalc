@@ -83,20 +83,23 @@ int main(int argc, char *argv[])
 
     function = parse_args(arg);
 
-    calc_t mycalc;
-    int err = calc_init(&mycalc);
+    calc_t mycalc;                // Creates a adress (in this case object) for our calculator
+    int err = calc_init(&mycalc); // Creates a variable at previous adress
     if (err)
     {
         printf("Calculator failed!\n");
     }
-    err = mycalc.add(&mycalc, 4.0, 60);
-    err = mycalc.add(&mycalc, mycalc.result, 40);
+    // err = mycalc.add(&mycalc, 4.0, 60);
+    // err = mycalc.add(&mycalc, mycalc.result, 40);
+    err = mycalc.substract(&mycalc, 5.0, 4.0);
+    err = mycalc.multiply(&mycalc, 5.0, 4.0);
+
     if (err)
     {
         printf("Addition failed!\n");
     }
 
-    printf("Addition Result: %f\n", mycalc.result);
+    printf("Result: %f\n", mycalc.result);
 
     if (debounce == 0)
     {
