@@ -26,10 +26,19 @@ static int multiply(calc_t *calc, double arg_1, double arg_2)
     return 0;
 }
 
+static int divide(calc_t *calc, double arg_1, double arg_2)
+{
+    printf("Divising Started!");
+    calc->result = arg_1;
+    calc->result = calc->result / arg_2;
+    return 0;
+}
+
 int calc_init(calc_t *calc) // Here we sort of connect the dots between calc.h and calc.c. We tell it what to do when it receives a certain connection. For example, calc.add would initalize the add function
 {
     calc->add = add;
     calc->substract = subtract;
     calc->multiply = multiply;
+    calc->divide = divide;
     return 0;
 }

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "calc.h"
-
+int fn;
 typedef enum
 {
     CALC_FUNC_INVALID,
@@ -51,7 +51,6 @@ calc_func_t parse_args(char arg)
         fn = CALC_FUNC_INVALID;
         break;
     }
-
     return fn;
 }
 
@@ -67,8 +66,8 @@ int main(int argc, char *argv[])
     double sumS = 0;
     int debounce = 0;
     double results;
+    double inputs;
     int function = 0;
-
     char arg = HELP; // Default to help
     char *parg;
     if (argv[1] && (strncmp(argv[1], "-", 1) == 0))
@@ -82,26 +81,63 @@ int main(int argc, char *argv[])
     }
 
     function = parse_args(arg);
-
     calc_t mycalc;                // Creates a adress (in this case object) for our calculator
     int err = calc_init(&mycalc); // Creates a variable at previous adress
     if (err)
     {
         printf("Calculator failed!\n");
     }
-    // err = mycalc.add(&mycalc, 4.0, 60);
-    // err = mycalc.add(&mycalc, mycalc.result, 40);
-    err = mycalc.substract(&mycalc, 5.0, 4.0);
-    err = mycalc.multiply(&mycalc, 5.0, 4.0);
-
     if (err)
     {
         printf("Addition failed!\n");
     }
 
+    if (function == CALC_FUNC_ADD)
+
+    {
+        for (i == 2; i < argc; i++) // For loop starting at 2 to ignore function and command declaration
+        {
+            inputs = atof(argv[i]); // Converting to double for use in caluclation
+            printf("INPUT ======== %lf\n", inputs);
+            err = mycalc.add(&mycalc, mycalc.result, inputs);
+        }
+    }
+    /*
+
+
+
+
+
+
+
+
+
+
+
+
+        IGNORE ----------------- OLD CODE, BUT WORKING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    */
     printf("Result: %f\n", mycalc.result);
 
-    if (debounce == 0)
+    if (debounce == 1)
     {
         printf("A function can proceed!\n\n");
         if (function == 1)
