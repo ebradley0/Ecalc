@@ -21,7 +21,13 @@ enum argument
     DIVIDE = 'D',
 };
 
-calc_func_t parse_args(char arg)
+enum temp
+{
+    placeholder = 'Y',
+};
+
+calc_func_t
+parse_args(char arg)
 {
     calc_func_t fn;
 
@@ -95,13 +101,18 @@ int main(int argc, char *argv[])
     if (function == CALC_FUNC_ADD)
 
     {
-        for (i == 2; i < argc; i++) // For loop starting at 2 to ignore function and command declaration
+        // For loop starting at 2 to ignore function and command declaration
+        for (i = 2; i < argc; i++)
         {
-            inputs = atof(argv[i]); // Converting to double for use in caluclation
+            char *placeholder = argv[i];
+            inputs = strtod(argv[i], &placeholder); // Converting command line argument to double for use in caluclation
             printf("INPUT ======== %lf\n", inputs);
+
             err = mycalc.add(&mycalc, mycalc.result, inputs);
         }
+        printf("Result: %f\n", mycalc.result);
     }
+
     /*
 
 
@@ -135,7 +146,6 @@ int main(int argc, char *argv[])
 
 
     */
-    printf("Result: %f\n", mycalc.result);
 
     if (debounce == 1)
     {
