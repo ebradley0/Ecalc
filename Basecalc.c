@@ -10,6 +10,7 @@ typedef enum
     CALC_FUNC_SUBTRACT,
     CALC_FUNC_MULTIPLY,
     CALC_FUNC_DIVIDE,
+    CALC_FUNC_LIST,
 } calc_func_t;
 
 enum argument
@@ -19,6 +20,7 @@ enum argument
     SUBTRACT = 'S',
     MULTIPLY = 'M',
     DIVIDE = 'D',
+    CONSTANT = 'C',
 };
 
 enum temp
@@ -34,7 +36,7 @@ parse_args(char arg)
     switch (arg)
     {
     case HELP:
-        printf("THIS IS A HELP STATEMENT\n\n");
+        printf("Welcome to E-Calc! A completely unnecessary and simple caluclator\nThe following 4 commands are currently available:\n\n A - Adding\n S - Subtraction\n M - Multiplication\n D - Division\n C - Multiply a list by a constant\n\n\n In order to run the program, use the following format: (Function - See list) #1, #2, #3, etc. \n\n Currently, the calculations will run off the first input number, so keep that in mind for everything other than addition!\n\n");
         break;
     case ADD:
         printf("You're adding\n");
@@ -52,6 +54,10 @@ parse_args(char arg)
         printf("You're dividing\n");
         fn = CALC_FUNC_DIVIDE;
         break;
+    case CONSTANT:
+        printf("Multiplying a list!\n");
+        fn = CALC_FUNC_LIST;
+        break;
     default:
         printf("Please enter a valid function type. For a list of accepted functions use --H.\n");
         fn = CALC_FUNC_INVALID;
@@ -62,15 +68,7 @@ parse_args(char arg)
 
 int main(int argc, char *argv[])
 {
-    int i;
-    int p;
-    char g;
-    char b;
-    double sum = 0;
-    double sumM = 1;
-    double DIV1 = 0;
-    double sumS = 0;
-    int debounce = 0;
+    unsigned int i;
     double results;
     double inputs;
     int function = 0;
@@ -98,6 +96,18 @@ int main(int argc, char *argv[])
         printf("Addition failed!\n");
     }
 
+    /*
+
+        FUNCTIONS BELOW
+
+
+    */
+
+    if (argc <= 3)
+    {
+        printf("Whoops! Looks like you forgot to include enough numbers to do some math! For further assistance use -H\n");
+        exit(1);
+    }
     if (function == CALC_FUNC_ADD)
 
     {
@@ -105,7 +115,8 @@ int main(int argc, char *argv[])
         for (i = 2; i < argc; i++)
         {
             char *placeholder = argv[i];
-            inputs = strtod(argv[i], &placeholder); // Converting command line argument to double for use in caluclation
+            char *end;
+            inputs = strtod(argv[i], &end); // Converting command line argument to double for use in caluclation
             printf("INPUT ======== %lf\n", inputs);
 
             err = mycalc.add(&mycalc, mycalc.result, inputs);
@@ -113,103 +124,45 @@ int main(int argc, char *argv[])
         printf("Result: %f\n", mycalc.result);
     }
 
-    /*
-
-
-
-
-
-
-
-
-
-
-
-
-        IGNORE ----------------- OLD CODE, BUT WORKING
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    */
-
-    if (debounce == 1)
+    else if (function == CALC_FUNC_SUBTRACT)
     {
-        printf("A function can proceed!\n\n");
-        if (function == 1)
+        mycalc.result = atof(argv[2]);
+        for (i = 3; i < argc; i++)
         {
-            for (i = 2; i < argc; i++)
-            {
-                char *y = argv[i];
-
-                results = strtod(y, &y);
-
-                sum = sum + results;
-            }
+            inputs = atof(argv[i]);
+            err = mycalc.substract(&mycalc, mycalc.result, inputs);
         }
-
-        else if (function == 2)
-        {
-            char *t = argv[2];
-            sumS = strtod(t, &t);
-
-            for (i = 3; i < argc; i++)
-            {
-                char *y = argv[i];
-
-                results = strtod(y, &y);
-
-                sum = sumS - results;
-                sumS = sum;
-            }
-        }
-
-        else if (function == 3)
-        {
-            for (i = 2; i < argc; i++)
-            {
-                char *y = argv[i];
-
-                results = strtod(y, &y);
-
-                sum = sumM * results;
-                sumM = sum;
-            }
-        }
-        else if (function == 4)
-        {
-
-            char *z = argv[2];
-            DIV1 = strtod(z, &z);
-
-            for (i = 3; i < argc; i++)
-            {
-                char *y = argv[i];
-
-                results = strtod(y, &y);
-
-                sum = DIV1 / results;
-                DIV1 = sum;
-            }
-        }
+        printf("Results: %f\n", mycalc.result);
     }
-    if (debounce == 0)
+
+    else if (function == CALC_FUNC_MULTIPLY)
     {
-        printf("The Answer is: %lf\n\n", sum);
-        return 0;
+        mycalc.result = atof(argv[2]);
+        for (i = 3; i < argc; i++)
+        {
+            inputs = atof(argv[i]);
+            err = mycalc.multiply(&mycalc, mycalc.result, inputs);
+        }
+        printf("Results: %f\n", mycalc.result);
+    }
+    else if (function == CALC_FUNC_DIVIDE)
+    {
+        mycalc.result = atof(argv[2]);
+        for (i = 3; i < argc; i++)
+        {
+            inputs = atof(argv[i]);
+            err = mycalc.divide(&mycalc, mycalc.result, inputs);
+        }
+        printf("Results: %f\n", mycalc.result);
+    }
+    else if (function == CALC_FUNC_LIST)
+    {
+        mycalc.constant = atof(argv[2]);
+        for (i = 3; i < argc; i++)
+        {
+            inputs = atof(argv[i]);
+            mycalc.list(&mycalc, inputs, mycalc.constant);
+            printf("Result: %lf\n", mycalc.result);
+        }
     }
 }

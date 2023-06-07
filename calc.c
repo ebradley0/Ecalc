@@ -28,9 +28,15 @@ static int multiply(calc_t *calc, double arg_1, double arg_2)
 
 static int divide(calc_t *calc, double arg_1, double arg_2)
 {
-    printf("Divising Started!");
     calc->result = arg_1;
+    printf("Dividing Started! Input = %lf\n", calc->result);
+
     calc->result = calc->result / arg_2;
+    return 0;
+}
+static int list(calc_t *calc, double arg_1, double null)
+{
+    calc->result = null * arg_1;
     return 0;
 }
 
@@ -40,5 +46,6 @@ int calc_init(calc_t *calc) // Here we sort of connect the dots between calc.h a
     calc->substract = subtract;
     calc->multiply = multiply;
     calc->divide = divide;
+    calc->list = list;
     return 0;
 }
